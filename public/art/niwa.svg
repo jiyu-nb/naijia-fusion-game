@@ -1,0 +1,144 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bodyGrad" cx="33%" cy="20%" r="90%">
+      <stop offset="0%" stop-color="#FFFEFA"/>
+      <stop offset="38%" stop-color="#FFF4E0"/>
+      <stop offset="74%" stop-color="#F3DFBD"/>
+      <stop offset="100%" stop-color="#E2C296"/>
+    </radialGradient>
+    <radialGradient id="bellyGrad" cx="42%" cy="28%" r="82%">
+      <stop offset="0%" stop-color="#FFFEFC"/>
+      <stop offset="58%" stop-color="#FFF8EB"/>
+      <stop offset="100%" stop-color="#F3E1C8"/>
+    </radialGradient>
+    <radialGradient id="milkGrad" cx="36%" cy="24%" r="82%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#FFFCF3"/>
+      <stop offset="100%" stop-color="#EFDCBC"/>
+    </radialGradient>
+    <radialGradient id="eyeGrad" cx="40%" cy="30%" r="78%">
+      <stop offset="0%" stop-color="#FFFEFB"/>
+      <stop offset="70%" stop-color="#FBF0DC"/>
+      <stop offset="100%" stop-color="#EDDCC0"/>
+    </radialGradient>
+    <linearGradient id="lidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F6E6CB"/>
+      <stop offset="100%" stop-color="#EAD3AE"/>
+    </linearGradient>
+    <linearGradient id="limbGrad" x1="0%" y1="0%" x2="20%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8E9"/>
+      <stop offset="100%" stop-color="#E7CFAB"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#FFE9AE"/>
+      <stop offset="48%" stop-color="#F3C463"/>
+      <stop offset="100%" stop-color="#CE9A2F"/>
+    </linearGradient>
+    <radialGradient id="mintGrad" cx="34%" cy="26%" r="80%">
+      <stop offset="0%" stop-color="#D8FBE9"/>
+      <stop offset="55%" stop-color="#8FE3B8"/>
+      <stop offset="100%" stop-color="#4FB98C"/>
+    </radialGradient>
+    <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F7B8A8" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#F7B8A8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+    <filter id="softSm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <clipPath id="eyeClipL"><circle cx="398" cy="566" r="98"/></clipPath>
+    <clipPath id="eyeClipR"><circle cx="626" cy="566" r="98"/></clipPath>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="512" cy="908" rx="248" ry="46" fill="#8A6A45" opacity="0.20" filter="url(#soft)"/>
+
+  <!-- feet -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round" fill="url(#limbGrad)">
+    <path d="M344 840 C 306 858, 292 900, 320 924 C 352 950, 408 938, 418 900 C 426 868, 396 842, 364 838 Z"/>
+    <path d="M680 840 C 718 858, 732 900, 704 924 C 672 950, 616 938, 606 900 C 598 868, 628 842, 660 838 Z"/>
+    <g stroke-width="6" fill="none" stroke-linecap="round">
+      <path d="M336 868 L 320 854 M 356 858 L 350 838 M 378 856 L 380 836"/>
+      <path d="M688 868 L 704 854 M 668 858 L 674 838 M 646 856 L 644 836"/>
+    </g>
+  </g>
+
+  <!-- body -->
+  <path d="M512 384
+           C 706 384, 862 488, 868 650
+           C 874 802, 728 896, 512 896
+           C 296 896, 150 802, 156 650
+           C 162 488, 318 384, 512 384 Z"
+        fill="url(#bodyGrad)" stroke="#6B4B2A" stroke-width="8"/>
+
+  <!-- soft belly -->
+  <ellipse cx="512" cy="726" rx="210" ry="146" fill="url(#bellyGrad)"/>
+  <ellipse cx="512" cy="726" rx="210" ry="146" fill="none" stroke="#E7CFAB" stroke-width="6" opacity="0.75"/>
+
+  <!-- short arms -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+    <ellipse cx="156" cy="724" rx="64" ry="54" fill="url(#limbGrad)" transform="rotate(-18 156 724)"/>
+    <ellipse cx="868" cy="724" rx="64" ry="54" fill="url(#limbGrad)" transform="rotate(18 868 724)"/>
+    <g stroke-width="5" fill="none" stroke-linecap="round" opacity="0.75">
+      <path d="M132 702 L 156 709 M 126 724 L 154 726 M 132 746 L 156 743"/>
+      <path d="M892 702 L 868 709 M 898 724 L 870 726 M 892 746 L 868 743"/>
+    </g>
+  </g>
+
+  <!-- blush -->
+  <ellipse cx="262" cy="708" rx="70" ry="38" fill="url(#blushGrad)"/>
+  <ellipse cx="762" cy="708" rx="70" ry="38" fill="url(#blushGrad)"/>
+
+  <!-- eyes -->
+  <g>
+    <circle cx="398" cy="566" r="98" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="8"/>
+    <circle cx="626" cy="566" r="98" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="8"/>
+    <circle cx="386" cy="602" r="53" fill="#3A2A1E"/>
+    <circle cx="614" cy="602" r="53" fill="#3A2A1E"/>
+
+    <!-- left half-lid -->
+    <g clip-path="url(#eyeClipL)">
+      <path d="M290 430 L506 430 L506 566 C 456 618, 340 618, 290 566 Z" fill="url(#lidGrad)"/>
+      <path d="M300 552 C 346 600, 450 600, 496 552" fill="none" stroke="#C08A4A" stroke-width="11" opacity="0.35"/>
+      <path d="M300 566 C 348 616, 448 616, 496 566" fill="none" stroke="#6B4B2A" stroke-width="9" stroke-linecap="round"/>
+    </g>
+    <!-- right half-lid -->
+    <g clip-path="url(#eyeClipR)">
+      <path d="M518 430 L734 430 L734 566 C 684 618, 568 618, 518 566 Z" fill="url(#lidGrad)"/>
+      <path d="M528 552 C 574 600, 678 600, 724 552" fill="none" stroke="#C08A4A" stroke-width="11" opacity="0.35"/>
+      <path d="M528 566 C 576 616, 676 616, 724 566" fill="none" stroke="#6B4B2A" stroke-width="9" stroke-linecap="round"/>
+    </g>
+
+    <!-- highlights on the peeking pupils -->
+    <circle cx="376" cy="632" r="13" fill="#FFFFFF"/>
+    <circle cx="604" cy="632" r="13" fill="#FFFFFF"/>
+  </g>
+
+  <!-- mouth -->
+  <path d="M472 792 C 498 810, 526 810, 552 792" fill="none" stroke="#6B4B2A" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- milk bead resting on the head -->
+  <ellipse cx="512" cy="452" rx="78" ry="18" fill="#C29B6C" opacity="0.26" filter="url(#softSm)"/>
+  <path d="M512 236
+           C 562 296, 604 336, 604 382
+           C 604 426, 564 458, 512 458
+           C 460 458, 420 426, 420 382
+           C 420 336, 462 296, 512 236 Z"
+        fill="url(#milkGrad)" stroke="#6B4B2A" stroke-width="8" stroke-linejoin="round"/>
+  <ellipse cx="482" cy="330" rx="18" ry="38" fill="#FFFFFF" opacity="0.9" transform="rotate(-12 482 330)"/>
+  <ellipse cx="466" cy="380" rx="11" ry="16" fill="#FFFFFF" opacity="0.6"/>
+  <path d="M566 318 C 592 346, 602 362, 602 386" fill="none" stroke="#8FE3B8" stroke-width="7" opacity="0.45" stroke-linecap="round"/>
+
+  <!-- sparkles -->
+  <g stroke="#6B4B2A" stroke-width="4" stroke-linejoin="round">
+    <path d="M742 306 L 752 328 L 774 338 L 752 348 L 742 370 L 732 348 L 710 338 L 732 328 Z" fill="url(#goldGrad)"/>
+    <path d="M296 268 L 304 286 L 322 294 L 304 302 L 296 320 L 288 302 L 270 294 L 288 286 Z" fill="url(#mintGrad)"/>
+  </g>
+
+  <!-- rim light -->
+  <path d="M748 430 C 810 486, 850 568, 854 652" fill="none" stroke="#FFFFFF" stroke-width="11" opacity="0.38" stroke-linecap="round"/>
+  <path d="M292 420 C 344 398, 396 390, 442 388" fill="none" stroke="#FFFFFF" stroke-width="9" opacity="0.45" stroke-linecap="round"/>
+</svg>

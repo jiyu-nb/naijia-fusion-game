@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>再睡五分蛙 · 3D 自测台（three-frog）</title>
+<link rel="icon" href="data:," />
+<style>
+  :root {
+    --cream: #fff4e0;
+    --cream-deep: #e4c79c;
+    --mint: #8fe3b8;
+    --mint-deep: #4fb98c;
+    --gold: #f3c463;
+    --gold-deep: #ce9a2f;
+    --ink: #6b4b2a;
+    --blush: #f7b8a8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #22201d;
+    color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px;
+  }
+  /* 抖音竖屏基准 390 × 844 */
+  #phone {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    max-height: calc(100vh - 24px);
+    border-radius: 28px;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 50% 8%, #fffdf7 0%, var(--cream) 38%, var(--cream-deep) 100%);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, .55), inset 0 0 0 2px rgba(255, 255, 255, .5);
+    display: flex;
+    flex-direction: column;
+  }
+  @media (max-width: 420px) {
+    body { padding: 0; gap: 0; }
+    #phone { width: 100vw; height: 100vh; max-height: none; border-radius: 0; }
+  }
+
+  /* 顶部状态条 */
+  #status {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: .2px;
+    background: rgba(255, 255, 255, .5);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(107, 75, 42, .16);
+  }
+  #status b { color: var(--mint-deep); }
+  #status .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    border: 1px solid rgba(107, 75, 42, .35);
+    background: #fff;
+  }
+  .pill.on { background: var(--mint); border-color: var(--mint-deep); }
+  .pill.warn { background: #ffe0a8; border-color: var(--gold-deep); }
+  .pill.gold { background: var(--gold); border-color: var(--gold-deep); }
+
+  /* 3D 舞台：父容器负责等比缩放 */
+  #stage-wrap {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  #stage {
+    position: absolute;
+    inset: 0;
+  }
+  #hint {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    max-width: 92%;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    background: rgba(255, 255, 255, .82);
+    border: 1.5px solid rgba(107, 75, 42, .3);
+    box-shadow: 0 4px 14px rgba(107, 75, 42, .16);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+
+  /* 底部按钮区 */
+  #bottom {
+    flex: 0 0 auto;
+    padding: 8px 10px 14px;
+    background: rgba(255, 255, 255, .55);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(107, 75, 42, .16);
+  }
+  #log {
+    height: 62px;
+    overflow: hidden;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    line-height: 1.25;
+    color: #6b4b2a;
+    background: rgba(255, 255, 255, .7);
+    border-radius: 8px;
+    padding: 4px 6px;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  button {
+    flex: 1 1 auto;
+    min-width: 74px;
+    padding: 8px 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    background: #fff;
+    border: 1.5px solid rgba(107, 75, 42, .4);
+    border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(107, 75, 42, .25);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:active { transform: translateY(1px); box-shadow: none; }
+  button.mint { background: var(--mint); border-color: var(--mint-deep); }
+  button.gold { background: var(--gold); border-color: var(--gold-deep); }
+</style>
+
+<!-- 无打包：three 从 public/vendor 直接 ESM 引入 -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="phone">
+    <div id="status">
+      <div class="row">
+        <span id="badge" class="pill warn">加载中…</span>
+        <span id="src" class="pill">source: -</span>
+      </div>
+      <div class="row" style="margin-top:4px">
+        <span id="bellyPill" class="pill">bellyUp: false</span>
+        <span id="snoozePill" class="pill">snoozed: false</span>
+        <span id="goalPill" class="pill">goal: -</span>
+        <span id="hitPill" class="pill">traits: -</span>
+      </div>
+    </div>
+
+    <div id="stage-wrap">
+      <div id="stage"></div>
+      <div id="hint">碰额头它会逃 · 拖动把它翻过来 · 点肚皮才能关铃</div>
+    </div>
+
+    <div id="bottom">
+      <div id="log"></div>
+      <div class="btns">
+        <button id="btnStandin" class="mint">强制 standin</button>
+        <button id="btnGlb" class="gold">强制 GLB</button>
+        <button id="btnReset">重置 reset()</button>
+      </div>
+      <div class="btns" style="margin-top:6px">
+        <button id="btnTapForehead">tapForehead()</button>
+        <button id="btnFlip">flip()</button>
+        <button id="btnPokeBelly">点肚皮(坐标)</button>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+import * as THREE from 'three';
+import { createFrogScene } from '../src/three/frog.js';
+
+// —— 测试期可见的错误上报（同时打到页面，便于无人值守检查） ——
+const consoleErrors = [];
+window.__devErrors = consoleErrors;
+window.addEventListener('error', (e) => consoleErrors.push('error: ' + (e.message || e)));
+window.addEventListener('unhandledrejection', (e) => {
+  consoleErrors.push('unhandledrejection: ' + (e.reason && (e.reason.message || e.reason)));
+});
+
+const $ = (id) => document.getElementById(id);
+const logEl = $('log');
+const logs = [];
+function log(msg) {
+  const line = `${new Date().toLocaleTimeString('zh-CN', { hour12: false })}  ${msg}`;
+  logs.push(line);
+  if (logs.length > 40) logs.shift();
+  logEl.textContent = logs.slice(-5).join('\n');
+}
+
+const params = new URLSearchParams(location.search);
+// 默认按契约里的真实路径（服务器大概率 404 → 必须回退替身）
+const MODEL_URL = params.get('model') || '/assets/models/zaishuiwufenwa.glb';
+const START_MODE = params.get('mode') || 'standin'; // standin | glb
+
+let api = null;
+let hintText = '碰额头它会逃 · 拖动把它翻过来 · 点肚皮才能关铃';
+let goalPayload = null;
+let creating = false;
+let uiTimer = null;
+
+function setHint(text) {
+  hintText = text;
+  $('hint').textContent = text;
+  log('hint: ' + text);
+}
+
+function refreshUI() {
+  const d = api && api.getDebugState ? api.getDebugState() : null;
+  const src = d ? d.modelSource : '-';
+  const isGlb = src === 'hi3d-glb';
+  $('badge').textContent = isGlb ? 'Hi3D 真实模型' : '本地替身（额度不足）';
+  $('badge').className = 'pill ' + (isGlb ? 'mint on' : 'warn');
+  $('src').textContent = 'source: ' + src + (d && d.loadError ? ' (load fail)' : '');
+  $('src').title = d && d.loadError ? d.loadError : '';
+  $('bellyPill').textContent = 'bellyUp: ' + (d ? d.bellyUp : '-');
+  $('bellyPill').className = 'pill' + (d && d.bellyUp ? ' on' : '');
+  $('snoozePill').textContent = 'snoozed: ' + (d ? d.snoozed : '-');
+  $('snoozePill').className = 'pill' + (d && d.snoozed ? ' on' : '');
+  $('goalPill').textContent = 'goal: ' + (goalPayload ? '✔' : '-');
+  $('goalPill').className = 'pill' + (goalPayload ? ' gold' : '');
+  $('hitPill').textContent = 'traits: ' + (d && d.traitHits.length ? d.traitHits.join('+') : '-');
+  $('hint').textContent = hintText;
+}
+
+async function mount(mode) {
+  if (creating) return;
+  creating = true;
+  try {
+    if (api) {
+      try { api.dispose(); } catch (err) { console.warn('[dev] dispose 失败', err); }
+      api = null;
+    }
+    $('stage').innerHTML = '';
+    goalPayload = null;
+    const modelUrl = mode === 'glb' ? MODEL_URL : null;
+    log(`创建场景 mode=${mode} modelUrl=${modelUrl || 'null'}`);
+    api = await createFrogScene($('stage'), {
+      modelUrl,
+      hint: setHint,
+      onEvent: (name) => {
+        log('event: ' + name);
+        window.__devEvents.push(name);
+      },
+      onGoal: (payload) => {
+        goalPayload = payload;
+        log('onGoal: ' + JSON.stringify(payload));
+        window.__devGoals.push(payload);
+      },
+    });
+    log('scene ready, source=' + api.getModelSource());
+    refreshUI();
+    // 呼吸/闪烁需要连续帧，这里只做状态 UI 的节流刷新
+    if (!uiTimer) uiTimer = setInterval(refreshUI, 180);
+  } catch (err) {
+    log('createFrogScene 失败: ' + (err && err.message ? err.message : err));
+    console.error('[dev] createFrogScene 失败', err);
+  } finally {
+    creating = false;
+  }
+}
+
+window.__devEvents = [];
+window.__devGoals = [];
+window.__frogDev = {
+  get api() { return api; },
+  log,
+  get hint() { return hintText; },
+  get goals() { return window.__devGoals; },
+  get events() { return window.__devEvents; },
+  state: () => (api ? api.getDebugState() : null),
+  remount: (mode) => mount(mode),
+  /** 肚皮热点在屏幕上的坐标（自动化测试点击用） */
+  projectHotspot() {
+    if (!api) return null;
+    const d = api.getDebugState();
+    const h = d.bellyHotspotLocal;
+    const world = api.pivot.localToWorld(new THREE.Vector3(h.x, h.y, h.z));
+    return this.projectWorld(world);
+  },
+  /** 额头中心在屏幕上的坐标 */
+  projectForehead() {
+    if (!api) return null;
+    const d = api.getDebugState();
+    const world = api.pivot.localToWorld(new THREE.Vector3(0, d.foreheadY + 0.12, 0));
+    return this.projectWorld(world);
+  },
+  projectWorld(world) {
+    const canvas = api.renderer.domElement;
+    const rect = canvas.getBoundingClientRect();
+    const v = world.clone().project(api.camera);
+    return {
+      x: rect.left + ((v.x + 1) / 2) * rect.width,
+      y: rect.top + ((1 - v.y) / 2) * rect.height,
+      visible: v.z < 1 && v.x > -1 && v.x < 1 && v.y > -1 && v.y < 1,
+    };
+  },
+  THREE,
+};
+
+$('btnStandin').addEventListener('click', () => mount('standin'));
+$('btnGlb').addEventListener('click', () => mount('glb'));
+$('btnReset').addEventListener('click', () => { if (api) { api.reset(); goalPayload = null; refreshUI(); log('reset()'); } });
+$('btnTapForehead').addEventListener('click', () => { if (api) { api.tapForehead(); log('tapForehead()'); } });
+$('btnFlip').addEventListener('click', () => { if (api) { api.flip(); log('flip()'); } });
+$('btnPokeBelly').addEventListener('click', () => {
+  if (!api) return;
+  const pt = window.__frogDev.projectHotspot();
+  if (!pt) return;
+  log(`肚皮热点屏幕坐标 ${pt.x.toFixed(1)},${pt.y.toFixed(1)} visible=${pt.visible}`);
+});
+
+mount(START_MODE);
+refreshUI();
+log('dev 页启动 · model=' + MODEL_URL);
+</script>
+</body>
+</html>

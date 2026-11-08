@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>cup.js 自测台 · 漏一口 / 醒奶杯</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23FFF4E0' stroke='%236B4B2A' stroke-width='3'/%3E%3Ccircle cx='11' cy='14' r='2' fill='%236B4B2A'/%3E%3Ccircle cx='21' cy='14' r='2' fill='%236B4B2A'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #6B4B2A;
+    --cream: #FFF4E0;
+    --sand: #E4C79C;
+    --mint: #8FE3B8;
+    --mint-deep: #4FB98C;
+    --gold: #F3C463;
+    --gold-deep: #CE9A2F;
+    --blush: #F7B8A8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%;
+    background: radial-gradient(circle at 50% 0%, #FFFBF3, #F6E9D6 60%, #EAD8BC);
+    color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  }
+  body { display: flex; gap: 18px; padding: 16px; align-items: flex-start; justify-content: center; }
+  .phone {
+    position: relative; width: 390px; height: 844px; flex: 0 0 auto;
+    border-radius: 34px; overflow: hidden;
+    background: linear-gradient(180deg, #FFFDF7, #FFF0DA 58%, #F4E3C8);
+    box-shadow: 0 24px 60px rgba(107, 75, 42, .28), 0 0 0 10px #fff, 0 0 0 12px rgba(107, 75, 42, .18);
+  }
+  #stage {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+  }
+  .topbar {
+    position: relative; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; padding: 14px 14px 6px;
+  }
+  .topbar h1 { font-size: 16px; margin: 0; letter-spacing: 1px; }
+  .topbar .sub { font-size: 11px; opacity: .6; letter-spacing: .5px; }
+  #play { position: relative; flex: 1 1 auto; min-height: 0; }
+  .bottombar {
+    position: relative; z-index: 5;
+    padding: 8px 14px 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-size: 13px; font-weight: 700; color: var(--ink);
+    background: var(--cream); border: 2px solid rgba(107, 75, 42, .45);
+    border-radius: 999px; padding: 7px 14px; cursor: pointer;
+    box-shadow: 0 3px 0 rgba(107, 75, 42, .2); transition: transform .08s, background .15s;
+  }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(107, 75, 42, .2); }
+  button.on { background: var(--mint); border-color: var(--mint-deep); }
+  button.muted { background: var(--blush); }
+  .meter { display: flex; gap: 10px; font-size: 11px; flex-wrap: wrap; opacity: .85; }
+  .meter b { font-variant-numeric: tabular-nums; }
+  .logpane {
+    width: 420px; max-width: 46vw; height: 844px; display: flex; flex-direction: column; gap: 10px;
+    background: rgba(255, 253, 247, .82); border: 2px solid rgba(107, 75, 42, .3);
+    border-radius: 18px; padding: 12px; backdrop-filter: blur(6px);
+  }
+  .logpane h2 { font-size: 13px; margin: 0; letter-spacing: 1px; display: flex; justify-content: space-between; }
+  .logpane h2 span { font-weight: 400; opacity: .6; }
+  #log {
+    flex: 1; overflow: auto; font: 12px/1.55 ui-monospace, "Cascadia Mono", Consolas, monospace;
+    background: #FFFDF7; border-radius: 12px; padding: 8px 10px; border: 1px solid rgba(107, 75, 42, .16);
+    white-space: pre-wrap; word-break: break-all;
+  }
+  #log .ev { color: #2f6e55; }
+  #log .goal { color: #a8681a; font-weight: 700; }
+  #log .hint { color: #8a7050; }
+  #log .warn { color: #a63d2b; }
+  .kv { font-size: 12px; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; }
+  .kv span:nth-child(odd) { opacity: .6; }
+  .goal-flash { animation: gf .5s ease-out; }
+  @keyframes gf { from { background: #F3C463; } to { background: transparent; } }
+  @media (max-width: 1000px) {
+    body { flex-direction: column; align-items: center; padding: 10px; gap: 12px; }
+    .logpane { width: 390px; max-width: 100%; height: 320px; }
+  }
+  /* ?embed=1：手机真机 / Playwright 390×844 自测用，整屏就是游戏 */
+  body.embed { padding: 0; gap: 0; display: block; }
+  body.embed .phone {
+    width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; box-shadow: none;
+  }
+  body.embed .logpane { display: none; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div id="stage">
+      <div class="topbar">
+        <div>
+          <h1>cup.js 自测台</h1>
+          <div class="sub" id="sub">frogMilk · 漏一口</div>
+        </div>
+        <div class="row">
+          <button id="btn-mute" type="button">🔊 声音</button>
+        </div>
+      </div>
+      <div id="play"></div>
+      <div class="bottombar">
+        <div class="row">
+          <button id="btn-frog" type="button" class="on">漏一口</button>
+          <button id="btn-alarm" type="button">醒奶杯</button>
+          <button id="btn-reset" type="button">重置</button>
+          <button id="btn-dispose" type="button">dispose</button>
+        </div>
+        <div class="meter">
+          <span>ready <b id="m-ready">—</b></span>
+          <span>muted <b id="m-muted">—</b></span>
+          <span>round <b id="m-round">0</b></span>
+          <span>events <b id="m-events">0</b></span>
+          <span>goals <b id="m-goals">0</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="logpane">
+    <h2>onEvent 日志 <span id="log-count">0 条</span></h2>
+    <div id="log"></div>
+    <div class="kv">
+      <span>recipe</span><span id="kv-recipe">frogMilk</span>
+      <span>art</span><span id="kv-art">inline-svg 占位</span>
+      <span>audio</span><span id="kv-audio">未解锁</span>
+      <span>last</span><span id="kv-last">—</span>
+    </div>
+    <div class="row">
+      <button id="btn-sfx" type="button">试音 全部</button>
+      <button id="btn-clear" type="button">清空日志</button>
+    </div>
+  </aside>
+
+<script type="module">
+import { createCupScene } from '../../src/scenes/cup.js';
+import { audio } from '../../src/audio.js';
+
+const play = document.getElementById('play');
+const logEl = document.getElementById('log');
+const logCount = document.getElementById('log-count');
+const sub = document.getElementById('sub');
+
+if (new URLSearchParams(location.search).get('embed') === '1') {
+  document.body.classList.add('embed');
+}
+
+const SOUND_MAP = {
+  bubble: () => audio.bubble(),
+  pop: () => audio.pop(),
+  hop: () => audio.hop(),
+  tick: () => audio.tick(),
+  ding: () => audio.ding(),
+  flip: () => audio.flip(),
+  snooze: () => audio.snooze(),
+};
+
+let events = 0;
+let goals = 0;
+let lastEvent = '—';
+let eventList = [];
+let scene = null;
+let recipe = 'frogMilk';
+const t0 = performance.now();
+
+function log(kind, text) {
+  const t = ((performance.now() - t0) / 1000).toFixed(2).padStart(6, '0');
+  const line = document.createElement('div');
+  line.className = kind;
+  line.textContent = `[${t}s] ${text}`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+  logCount.textContent = `${events} 条`;
+}
+
+function refreshMeters() {
+  document.getElementById('m-ready').textContent = audio.ready ? 'yes' : 'no';
+  document.getElementById('m-muted').textContent = audio.muted ? 'yes' : 'no';
+  document.getElementById('m-round').textContent = String(scene && scene.round != null ? scene.round : 0);
+  document.getElementById('m-events').textContent = String(events);
+  document.getElementById('m-goals').textContent = String(goals);
+  document.getElementById('kv-audio').textContent = audio.ready
+    ? (audio.muted ? '已解锁 · 静音' : '已解锁 · 出声')
+    : '未解锁';
+  document.getElementById('kv-last').textContent = lastEvent;
+  document.getElementById('kv-recipe').textContent = recipe;
+  document.getElementById('kv-art').textContent =
+    play.querySelector('.cup-scene')?.dataset.art === 'png' ? 'PNG（真实美术）' : 'inline-svg 占位';
+}
+setInterval(refreshMeters, 300);
+
+function onEvent(name) {
+  events += 1;
+  lastEvent = name;
+  eventList.push(name);
+  log('ev', `onEvent('${name}')`);
+  const fn = SOUND_MAP[name];
+  if (fn) {
+    try { fn(); } catch (err) { log('warn', `音效 ${name} 出错: ${err.message}`); }
+  }
+  refreshMeters();
+}
+
+function onGoal(payload) {
+  goals += 1;
+  log('goal', `✅ onGoal(${payload ? JSON.stringify(payload) : ''})  ← 第 ${goals} 次`);
+  document.body.classList.add('goal-flash');
+  setTimeout(() => document.body.classList.remove('goal-flash'), 500);
+  refreshMeters();
+}
+
+function hint(text) {
+  log('hint', `hint('${text}')`);
+}
+
+const sceneRef = () => scene;
+
+function mount(nextRecipe) {
+  if (scene) {
+    try { scene.dispose(); } catch (err) { log('warn', `dispose 出错: ${err.message}`); }
+    scene = null;
+  }
+  recipe = nextRecipe;
+  sub.textContent = `${recipe} · ${recipe === 'frogMilk' ? '漏一口' : '醒奶杯'}`;
+  document.getElementById('btn-frog').classList.toggle('on', recipe === 'frogMilk');
+  document.getElementById('btn-alarm').classList.toggle('on', recipe === 'alarmMilk');
+  play.innerHTML = '';
+  scene = createCupScene(play, recipe, {
+    onGoal: (p) => onGoal(p),
+    onEvent: (n) => onEvent(n),
+    hint: (t) => hint(t),
+  });
+  log('hint', `— 场景已挂载：${recipe} —`);
+  refreshMeters();
+}
+
+document.getElementById('btn-frog').addEventListener('click', () => mount('frogMilk'));
+document.getElementById('btn-alarm').addEventListener('click', () => mount('alarmMilk'));
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (!scene) return;
+  scene.reset();
+  goals = 0;
+  log('hint', '— reset() —');
+  refreshMeters();
+});
+document.getElementById('btn-dispose').addEventListener('click', () => {
+  if (!scene) return;
+  scene.dispose();
+  scene = null;
+  log('hint', '— dispose()，container 空出 ' + play.childElementCount + ' 个子节点 —');
+  refreshMeters();
+});
+document.getElementById('btn-clear').addEventListener('click', () => {
+  logEl.innerHTML = '';
+  events = 0;
+  eventList = [];
+  logCount.textContent = '0 条';
+  refreshMeters();
+});
+document.getElementById('btn-mute').addEventListener('click', () => {
+  audio.unlock();
+  const muted = audio.toggleMute();
+  const btn = document.getElementById('btn-mute');
+  btn.textContent = muted ? '🔇 静音' : '🔊 声音';
+  btn.classList.toggle('muted', muted);
+  log('hint', `toggleMute() -> ${muted}`);
+  refreshMeters();
+});
+
+document.getElementById('btn-sfx').addEventListener('click', () => {
+  audio.unlock();
+  const names = ['hop', 'flip', 'snooze', 'ding', 'bubble', 'pop', 'tick'];
+  names.forEach((n, i) => {
+    setTimeout(() => {
+      try { audio[n](); } catch (err) { log('warn', `audio.${n} 出错: ${err.message}`); }
+      log('ev', `试音 audio.${n}()`);
+    }, i * 240);
+  });
+  // 闹铃 1.6 秒后自动停，验证 alarm(on/off)
+  setTimeout(() => { audio.alarm(true); log('ev', 'audio.alarm(true)'); }, 1900);
+  setTimeout(() => { audio.alarm(false); log('ev', 'audio.alarm(false)'); }, 3600);
+});
+
+// 首次 pointerdown 解锁（契约要求）
+window.addEventListener('pointerdown', () => { audio.unlock(); refreshMeters(); }, { capture: true, once: true });
+window.addEventListener('keydown', () => { audio.unlock(); }, { capture: true, once: true });
+
+mount('frogMilk');
+
+// 自测用钩子（Playwright 读取）
+window.__cupDev = {
+  get scene() { return scene; },
+  get recipe() { return recipe; },
+  get events() { return events; },
+  get goals() { return goals; },
+  get lastEvent() { return lastEvent; },
+  get eventList() { return eventList.slice(); },
+  get audioReady() { return audio.ready; },
+  get audioMuted() { return audio.muted; },
+  get artMode() { return play.querySelector('.cup-scene')?.dataset.art || 'svg'; },
+  get sceneRef() { return sceneRef; },
+  mount,
+  reset: () => scene && scene.reset(),
+  dispose: () => scene && scene.dispose(),
+  toggleMute: () => audio.toggleMute(),
+};
+window.__cupDevLog = log;
+</script>
+</body>
+</html>

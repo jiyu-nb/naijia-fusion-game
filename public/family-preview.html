@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>奶家人 · 模型预览</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 38%, #fffdf8 0%, #f7ecd8 58%, #ead6b5 100%);
+        font-family: "Microsoft YaHei", sans-serif;
+      }
+      #app {
+        position: fixed;
+        inset: 0;
+      }
+      #meta {
+        position: fixed;
+        left: 10px;
+        bottom: 8px;
+        font-size: 10px;
+        color: #8a6a45;
+        background: rgba(255, 255, 255, 0.72);
+        padding: 4px 8px;
+        border-radius: 8px;
+        max-width: 90vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../vendor/three/build/three.module.js",
+          "three/addons/": "../vendor/three/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="meta">loading…</div>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+
+      const params = new URLSearchParams(location.search);
+      const file = params.get("file") || "奶蛙.glb";
+      const pathParam = params.get("path") || "/family/" + encodeURIComponent(file);
+      const angle = Number(params.get("angle") || 0);
+      const scaleTo = Number(params.get("scale") || 2.35);
+      const transparent = params.get("transparent") === "1";
+      const meta = document.getElementById("meta");
+      if (transparent) {
+        document.documentElement.style.background = "transparent";
+        document.body.style.background = "transparent";
+        meta.style.display = "none";
+      }
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.05;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      document.getElementById("app").appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.01, 100);
+      camera.position.set(0, 0.12, 4.9);
+      camera.lookAt(0, 0, 0);
+
+      scene.add(new THREE.HemisphereLight(0xfff6e6, 0xd9c3a1, 2.1));
+      const key = new THREE.DirectionalLight(0xffffff, 2.6);
+      key.position.set(2.6, 3.2, 3.4);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xcdece0, 1.1);
+      fill.position.set(-3, 1.4, 2.2);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffe0a8, 1.4);
+      rim.position.set(0, 2.2, -3.4);
+      scene.add(rim);
+
+      const group = new THREE.Group();
+      scene.add(group);
+      const start = performance.now();
+      const loader = new GLTFLoader();
+      loader.setMeshoptDecoder(MeshoptDecoder);
+      loader.load(
+        pathParam,
+        (gltf) => {
+          const ms = Math.round(performance.now() - start);
+          const obj = gltf.scene;
+          const box = new THREE.Box3().setFromObject(obj);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+          obj.position.sub(center);
+          const maxDim = Math.max(size.x, size.y, size.z) || 1;
+          const s = scaleTo / maxDim;
+          obj.scale.setScalar(s);
+          group.add(obj);
+          group.rotation.y = (angle * Math.PI) / 180;
+          let meshes = 0;
+          let tris = 0;
+          let materials = new Set();
+          obj.traverse((o) => {
+            if (o.isMesh) {
+              meshes += 1;
+              materials.add(o.material?.name || "unnamed");
+              const idx = o.geometry?.index;
+              if (idx) tris += idx.count / 3;
+            }
+          });
+          window.__info = {
+            file,
+            loadMs: ms,
+            meshes,
+            triangles: Math.round(tris),
+            materials: [...materials],
+            size: { x: +size.x.toFixed(3), y: +size.y.toFixed(3), z: +size.z.toFixed(3) },
+            scale: +s.toFixed(4),
+            angle,
+            animations: gltf.animations?.length || 0,
+          };
+          meta.textContent = `${file} · ${(size.x).toFixed(2)}×${(size.y).toFixed(2)}×${(size.z).toFixed(2)} · ${Math.round(tris / 1000)}k tris · 加载 ${ms}ms · ${angle}°`;
+          window.__ready = true;
+        },
+        undefined,
+        (err) => {
+          window.__error = String(err);
+          window.__ready = true;
+          meta.textContent = "load error: " + err;
+        },
+      );
+
+      function tick() {
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      tick();
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="milkGrad" cx="34%" cy="18%" r="92%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="42%" stop-color="#FFF9EC"/>
+      <stop offset="80%" stop-color="#F5E4C6"/>
+      <stop offset="100%" stop-color="#E5CBA2"/>
+    </radialGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4FFF9"/>
+      <stop offset="45%" stop-color="#E3F6EC"/>
+      <stop offset="100%" stop-color="#CFEDE0"/>
+    </linearGradient>
+    <radialGradient id="foamGrad" cx="38%" cy="22%" r="84%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="58%" stop-color="#FFFCF4"/>
+      <stop offset="100%" stop-color="#F0DDBE"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="42%" y2="100%">
+      <stop offset="0%" stop-color="#FFEFC2"/>
+      <stop offset="42%" stop-color="#F3C463"/>
+      <stop offset="100%" stop-color="#C9922A"/>
+    </linearGradient>
+    <radialGradient id="mintGrad" cx="34%" cy="24%" r="82%">
+      <stop offset="0%" stop-color="#E4FFF2"/>
+      <stop offset="44%" stop-color="#8FE3B8"/>
+      <stop offset="100%" stop-color="#4FB98C"/>
+    </radialGradient>
+    <radialGradient id="eyeGrad" cx="40%" cy="30%" r="78%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="72%" stop-color="#FDF5E6"/>
+      <stop offset="100%" stop-color="#EFE0C6"/>
+    </radialGradient>
+    <linearGradient id="limbGrad" x1="0%" y1="0%" x2="20%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8E9"/>
+      <stop offset="100%" stop-color="#E4CBA6"/>
+    </linearGradient>
+    <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F7B8A8" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#F7B8A8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+    <clipPath id="cupClip">
+      <path d="M240 300 L784 300 L752 800 C 748 846, 716 876, 674 880 L 350 880 C 308 876, 276 846, 272 800 Z"
+            transform="rotate(-10 512 830)"/>
+    </clipPath>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="470" cy="908" rx="258" ry="42" fill="#8A6A45" opacity="0.20" filter="url(#soft)"/>
+
+  <!-- hind legs (behind the cup) -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round" fill="url(#limbGrad)">
+    <path d="M404 780 C 352 796, 312 838, 306 878 C 302 902, 320 914, 340 906
+             C 376 892, 408 850, 428 812 Z"/>
+    <path d="M282 856 C 240 866, 216 898, 228 924 C 242 952, 286 956, 310 936
+             C 330 948, 362 938, 366 914 C 370 888, 342 862, 316 854 Z"/>
+    <path d="M676 758 C 724 770, 760 796, 772 826 C 782 850, 766 866, 748 860
+             C 716 850, 686 820, 666 790 Z"/>
+    <path d="M742 800 C 784 806, 810 834, 804 862 C 796 892, 752 902, 730 884
+             C 708 896, 678 884, 676 860 C 674 834, 702 806, 728 798 Z"/>
+    <g stroke-width="6" fill="none" stroke-linecap="round">
+      <path d="M258 890 L 240 874 M 280 930 L 266 940 M 322 884 L 310 868"/>
+      <path d="M770 842 L 790 830 M 750 884 L 764 896 M 714 850 L 702 836"/>
+    </g>
+  </g>
+
+  <!-- glass cup base (tilted) -->
+  <g transform="rotate(-10 512 830)">
+    <path d="M240 300 L784 300 L752 800 C 748 846, 716 876, 674 880 L 350 880 C 308 876, 276 846, 272 800 Z"
+          fill="url(#glassGrad)"/>
+  </g>
+
+  <!-- milk inside (level stays horizontal) -->
+  <g clip-path="url(#cupClip)">
+    <path d="M100 398 C 200 374, 300 418, 420 396 C 540 374, 640 414, 760 392 C 830 380, 890 396, 950 388
+             L 950 990 L 100 990 Z"
+          fill="url(#milkGrad)"/>
+    <path d="M100 398 C 200 374, 300 418, 420 396 C 540 374, 640 414, 760 392 C 830 380, 890 396, 950 388"
+          fill="none" stroke="#D9B98D" stroke-width="7" opacity="0.75"/>
+    <ellipse cx="330" cy="470" rx="120" ry="52" fill="#FFFFFF" opacity="0.35"/>
+  </g>
+
+  <!-- glass outline + face + details (tilted) -->
+  <g transform="rotate(-10 512 830)">
+    <path d="M240 300 L784 300 L752 800 C 748 846, 716 876, 674 880 L 350 880 C 308 876, 276 846, 272 800 Z"
+          fill="none" stroke="#6B4B2A" stroke-width="8" stroke-linejoin="round"/>
+
+    <!-- milk stain on the belly -->
+    <g>
+      <path d="M430 726 C 468 700, 520 706, 546 736 C 566 760, 606 748, 610 776
+               C 614 806, 560 818, 528 802 C 500 788, 466 804, 444 780 C 424 758, 412 738, 430 726 Z"
+            fill="#FFFDF6" stroke="#E4CCA4" stroke-width="5" opacity="0.95"/>
+      <path d="M470 706 C 486 716, 496 734, 492 752" fill="none" stroke="#F3E3C6" stroke-width="7" opacity="0.9" stroke-linecap="round"/>
+      <path d="M586 800 C 596 822, 590 840, 574 850" fill="none" stroke="#FFFDF6" stroke-width="16" opacity="0.92" stroke-linecap="round"/>
+      <ellipse cx="446" cy="700" rx="13" ry="9" fill="#FFFDF6" stroke="#E4CCA4" stroke-width="4"/>
+      <ellipse cx="628" cy="742" rx="9" ry="7" fill="#FFFDF6" stroke="#E4CCA4" stroke-width="4"/>
+    </g>
+
+    <!-- face -->
+    <g>
+      <circle cx="412" cy="486" r="62" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="7"/>
+      <circle cx="576" cy="486" r="62" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="7"/>
+      <circle cx="420" cy="498" r="33" fill="#3A2A1E"/>
+      <circle cx="568" cy="498" r="33" fill="#3A2A1E"/>
+      <circle cx="406" cy="484" r="13" fill="#FFFFFF"/>
+      <circle cx="554" cy="484" r="13" fill="#FFFFFF"/>
+      <circle cx="432" cy="516" r="8" fill="#FFFFFF" opacity="0.85"/>
+      <circle cx="580" cy="516" r="8" fill="#FFFFFF" opacity="0.85"/>
+      <path d="M464 590 C 488 626, 526 626, 550 590" fill="#7C4A38" stroke="#6B4B2A" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M498 614 C 510 610, 522 610, 532 614" fill="none" stroke="#F7B8A8" stroke-width="9" stroke-linecap="round"/>
+      <path d="M508 630 C 516 648, 516 662, 508 670 C 500 662, 500 648, 508 630 Z" fill="#FFFFFF" stroke="#6B4B2A" stroke-width="5"/>
+    </g>
+    <ellipse cx="312" cy="572" rx="58" ry="30" fill="url(#blushGrad)"/>
+    <ellipse cx="672" cy="570" rx="58" ry="30" fill="url(#blushGrad)"/>
+
+    <!-- webbed hands gripping the cup -->
+    <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round" fill="url(#limbGrad)">
+      <path d="M258 646 C 214 640, 184 668, 188 700 C 192 730, 226 742, 252 724
+               C 268 736, 294 730, 296 706 C 298 682, 282 658, 258 646 Z"/>
+      <g stroke-width="5" fill="none" stroke-linecap="round">
+        <path d="M224 668 L 208 656 M 212 696 L 192 694 M 226 720 L 212 732"/>
+      </g>
+      <path d="M766 584 C 810 578, 840 606, 836 638 C 832 668, 798 680, 772 662
+               C 756 674, 730 668, 728 644 C 726 620, 742 596, 766 584 Z"/>
+      <g stroke-width="5" fill="none" stroke-linecap="round">
+        <path d="M802 608 L 818 596 M 816 636 L 836 634 M 800 660 L 816 672"/>
+      </g>
+    </g>
+
+    <!-- glass highlights -->
+    <path d="M268 318 C 252 462, 262 662, 296 840" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.65" stroke-linecap="round"/>
+    <path d="M716 328 C 730 470, 720 660, 694 832" fill="none" stroke="#FFFFFF" stroke-width="8" opacity="0.4" stroke-linecap="round"/>
+
+    <!-- foam at the rim -->
+    <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+      <path d="M236 322
+               C 236 292, 260 274, 288 280
+               C 296 250, 330 238, 356 256
+               C 372 228, 410 222, 430 248
+               C 450 222, 490 220, 512 246
+               C 534 220, 574 222, 592 248
+               C 612 224, 650 230, 666 258
+               C 694 242, 730 252, 736 284
+               C 766 280, 788 296, 788 322
+               L 788 340 C 700 358, 324 358, 236 340 Z"
+            fill="url(#foamGrad)"/>
+      <g fill="#FFFFFF" opacity="0.85" stroke="none">
+        <ellipse cx="316" cy="292" rx="24" ry="12" transform="rotate(-18 316 292)"/>
+        <ellipse cx="470" cy="252" rx="18" ry="9" transform="rotate(-8 470 252)"/>
+        <ellipse cx="686" cy="300" rx="22" ry="11" transform="rotate(16 686 300)"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- bubbles rising from the rim -->
+  <g stroke="#6B4B2A" stroke-width="6">
+    <circle cx="628" cy="230" r="30" fill="url(#foamGrad)"/>
+    <circle cx="700" cy="168" r="21" fill="url(#foamGrad)"/>
+    <circle cx="566" cy="172" r="15" fill="#E4FFF2"/>
+    <circle cx="668" cy="112" r="12" fill="#E4FFF2"/>
+    <g fill="#FFFFFF" stroke="none" opacity="0.9">
+      <circle cx="618" cy="218" r="8"/>
+      <circle cx="694" cy="160" r="6"/>
+    </g>
+  </g>
+
+  <!-- milk-drop tadpole, mid jump -->
+  <g>
+    <path d="M760 452 C 828 448, 872 396, 880 340" fill="none" stroke="#8FE3B8" stroke-width="10" stroke-linecap="round" opacity="0.55" stroke-dasharray="20 18"/>
+    <g transform="translate(856 302) rotate(12)">
+      <path d="M-30 12 C -74 32, -112 12, -126 -24
+               C -110 -10, -94 -6, -78 -8
+               C -96 8, -78 22, -58 22 C -46 22, -36 18, -30 12 Z"
+            fill="url(#milkGrad)" stroke="#6B4B2A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M-34 -2 C -64 10, -90 0, -102 -20" fill="none" stroke="#D9B98D" stroke-width="4" opacity="0.7"/>
+      <circle cx="0" cy="0" r="54" fill="url(#milkGrad)" stroke="#6B4B2A" stroke-width="7"/>
+      <ellipse cx="-18" cy="-20" rx="16" ry="23" fill="#FFFFFF" opacity="0.9" transform="rotate(-20 -18 -20)"/>
+      <circle cx="10" cy="6" r="10" fill="#3A2A1E"/>
+      <circle cx="36" cy="2" r="10" fill="#3A2A1E"/>
+      <circle cx="7" cy="2" r="4" fill="#FFFFFF"/>
+      <circle cx="33" cy="-2" r="4" fill="#FFFFFF"/>
+      <path d="M12 24 C 20 32, 30 32, 38 24" fill="none" stroke="#6B4B2A" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="-4" cy="20" rx="13" ry="7" fill="#F7B8A8" opacity="0.6"/>
+    </g>
+  </g>
+
+  <!-- sparkles -->
+  <g stroke="#6B4B2A" stroke-width="4" stroke-linejoin="round">
+    <path d="M254 494 L 262 512 L 280 520 L 262 528 L 254 546 L 246 528 L 228 520 L 246 512 Z" fill="url(#mintGrad)"/>
+    <path d="M806 486 L 813 502 L 829 509 L 813 516 L 806 532 L 799 516 L 783 509 L 799 502 Z" fill="url(#goldGrad)"/>
+  </g>
+</svg>

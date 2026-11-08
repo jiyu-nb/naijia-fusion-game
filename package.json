@@ -1,0 +1,17 @@
+{
+  "name": "naijia-fusion",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "奶家人融合小游戏",
+  "scripts": {
+    "start": "node server/server.mjs",
+    "dev": "node server/server.mjs"
+  },
+  "dependencies": {
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1"
+  }
+}

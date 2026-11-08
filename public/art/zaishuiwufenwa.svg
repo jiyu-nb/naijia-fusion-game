@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bodyGrad" cx="34%" cy="24%" r="86%">
+      <stop offset="0%" stop-color="#FFFDF6"/>
+      <stop offset="42%" stop-color="#FFF4E0"/>
+      <stop offset="78%" stop-color="#F5E2C2"/>
+      <stop offset="100%" stop-color="#E4C79C"/>
+    </radialGradient>
+    <radialGradient id="bellyGrad" cx="42%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#FFFEFB"/>
+      <stop offset="62%" stop-color="#FFF8EA"/>
+      <stop offset="100%" stop-color="#F0DDC0"/>
+    </radialGradient>
+    <radialGradient id="bellGrad" cx="34%" cy="26%" r="82%">
+      <stop offset="0%" stop-color="#D8FBE9"/>
+      <stop offset="48%" stop-color="#8FE3B8"/>
+      <stop offset="100%" stop-color="#4FB98C"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="35%" y2="100%">
+      <stop offset="0%" stop-color="#FFE7A8"/>
+      <stop offset="45%" stop-color="#F3C463"/>
+      <stop offset="100%" stop-color="#CE9A2F"/>
+    </linearGradient>
+    <radialGradient id="btnGrad" cx="36%" cy="28%" r="78%">
+      <stop offset="0%" stop-color="#CFF7E2"/>
+      <stop offset="52%" stop-color="#8FE3B8"/>
+      <stop offset="100%" stop-color="#4FB98C"/>
+    </radialGradient>
+    <radialGradient id="eyeGrad" cx="40%" cy="32%" r="76%">
+      <stop offset="0%" stop-color="#FFFDF7"/>
+      <stop offset="100%" stop-color="#F2E4CC"/>
+    </radialGradient>
+    <linearGradient id="footGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF6E4"/>
+      <stop offset="100%" stop-color="#E9D2AE"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="512" cy="920" rx="248" ry="46" fill="#8A6A45" opacity="0.20" filter="url(#soft)"/>
+
+  <!-- ring waves (born ringing) -->
+  <g fill="none" stroke="#8FE3B8" stroke-linecap="round">
+    <path d="M300 300 C 268 262, 262 214, 286 176" stroke-width="14" opacity="0.85"/>
+    <path d="M724 300 C 756 262, 762 214, 738 176" stroke-width="14" opacity="0.85"/>
+    <path d="M340 258 C 322 230, 320 200, 334 176" stroke-width="9" opacity="0.55"/>
+    <path d="M684 258 C 702 230, 704 200, 690 176" stroke-width="9" opacity="0.55"/>
+  </g>
+
+  <!-- feet -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+    <path d="M318 836 C 288 852, 274 892, 296 918 C 322 942, 372 936, 386 900 C 396 872, 372 844, 344 834 Z" fill="url(#footGrad)"/>
+    <path d="M706 836 C 736 852, 750 892, 728 918 C 702 942, 652 936, 638 900 C 628 872, 652 844, 680 834 Z" fill="url(#footGrad)"/>
+    <path d="M312 862 L 296 846 M 330 852 L 322 830 M 350 850 L 352 828" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M712 862 L 728 846 M 694 852 L 702 830 M 674 850 L 672 828" stroke-width="6" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- body -->
+  <path d="M512 356
+           C 664 356, 806 456, 818 636
+           C 830 794, 702 902, 512 902
+           C 322 902, 194 794, 206 636
+           C 218 456, 360 356, 512 356 Z"
+        fill="url(#bodyGrad)" stroke="#6B4B2A" stroke-width="8"/>
+
+  <!-- belly -->
+  <ellipse cx="512" cy="700" rx="198" ry="152" fill="url(#bellyGrad)" stroke="#6B4B2A" stroke-width="6"/>
+
+  <!-- snooze button -->
+  <g>
+    <circle cx="512" cy="700" r="108" fill="url(#goldGrad)" stroke="#6B4B2A" stroke-width="7"/>
+    <circle cx="512" cy="700" r="90" fill="#FFF3D6" stroke="#B98A2E" stroke-width="5"/>
+    <circle cx="512" cy="700" r="72" fill="url(#btnGrad)" stroke="#3E8F6A" stroke-width="5"/>
+    <!-- clock hands on the button: 5:05 -->
+    <g stroke="#274C3B" stroke-linecap="round" stroke-width="11">
+      <line x1="512" y1="700" x2="512" y2="654"/>
+      <line x1="512" y1="700" x2="548" y2="716"/>
+    </g>
+    <circle cx="512" cy="700" r="9" fill="#274C3B"/>
+    <!-- button gloss -->
+    <ellipse cx="486" cy="668" rx="30" ry="18" fill="#FFFFFF" opacity="0.55" transform="rotate(-24 486 668)"/>
+    <!-- zZ -->
+    <text x="592" y="632" font-family="Arial Black, Arial, sans-serif" font-size="58" font-weight="900" fill="#274C3B" opacity="0.9">z</text>
+    <text x="626" y="596" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900" fill="#274C3B" opacity="0.75">Z</text>
+  </g>
+
+  <!-- arms -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+    <path d="M212 690 C 176 706, 160 748, 182 776 C 206 806, 252 796, 262 762 C 270 734, 250 706, 226 692 Z" fill="url(#footGrad)"/>
+    <path d="M812 690 C 848 706, 864 748, 842 776 C 818 806, 772 796, 762 762 C 754 734, 774 706, 798 692 Z" fill="url(#footGrad)"/>
+  </g>
+
+  <!-- cheek bells -->
+  <g>
+    <!-- left bell -->
+    <path d="M232 654 C 232 606, 272 574, 314 574 C 356 574, 396 606, 396 654 L 396 682 L 232 682 Z"
+          fill="url(#bellGrad)" stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round"/>
+    <rect x="222" y="678" width="184" height="34" rx="17" fill="url(#goldGrad)" stroke="#6B4B2A" stroke-width="7"/>
+    <circle cx="314" cy="724" r="17" fill="url(#goldGrad)" stroke="#6B4B2A" stroke-width="6"/>
+    <ellipse cx="282" cy="614" rx="26" ry="15" fill="#FFFFFF" opacity="0.5" transform="rotate(-28 282 614)"/>
+    <!-- right bell -->
+    <path d="M628 654 C 628 606, 668 574, 710 574 C 752 574, 792 606, 792 654 L 792 682 L 628 682 Z"
+          fill="url(#bellGrad)" stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round"/>
+    <rect x="618" y="678" width="184" height="34" rx="17" fill="url(#goldGrad)" stroke="#6B4B2A" stroke-width="7"/>
+    <circle cx="710" cy="724" r="17" fill="url(#goldGrad)" stroke="#6B4B2A" stroke-width="6"/>
+    <ellipse cx="678" cy="614" rx="26" ry="15" fill="#FFFFFF" opacity="0.5" transform="rotate(-28 678 614)"/>
+  </g>
+
+  <!-- eyes -->
+  <g>
+    <circle cx="404" cy="452" r="92" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="8"/>
+    <circle cx="620" cy="452" r="92" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="8"/>
+    <circle cx="412" cy="470" r="45" fill="#3A2A1E"/>
+    <circle cx="628" cy="470" r="45" fill="#3A2A1E"/>
+    <circle cx="396" cy="452" r="16" fill="#FFFFFF"/>
+    <circle cx="612" cy="452" r="16" fill="#FFFFFF"/>
+    <!-- sleepy droopy upper lids -->
+    <path d="M312 424 C 356 484, 452 484, 496 424 L 496 356 L 312 356 Z"
+          fill="#FFF4E0" stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M528 424 C 572 484, 668 484, 712 424 L 712 356 L 528 356 Z"
+          fill="#FFF4E0" stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round"/>
+  </g>
+
+  <!-- blush -->
+  <ellipse cx="300" cy="770" rx="44" ry="24" fill="#F7B8A8" opacity="0.55"/>
+  <ellipse cx="724" cy="770" rx="44" ry="24" fill="#F7B8A8" opacity="0.55"/>
+
+  <!-- mouth -->
+  <path d="M462 806 C 490 832, 534 832, 562 806" fill="none" stroke="#6B4B2A" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- rim light -->
+  <path d="M700 402 C 770 452, 806 540, 806 636" fill="none" stroke="#FFFFFF" stroke-width="10" opacity="0.35" stroke-linecap="round"/>
+</svg>

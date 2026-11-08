@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="milkGrad" cx="34%" cy="18%" r="92%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#FFF9EC"/>
+      <stop offset="78%" stop-color="#F6E6C9"/>
+      <stop offset="100%" stop-color="#E7CEA6"/>
+    </radialGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4FFF9"/>
+      <stop offset="45%" stop-color="#E3F6EC"/>
+      <stop offset="100%" stop-color="#CFEDE0"/>
+    </linearGradient>
+    <radialGradient id="foamGrad" cx="38%" cy="22%" r="84%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="58%" stop-color="#FFFCF4"/>
+      <stop offset="100%" stop-color="#F0DDBE"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="42%" y2="100%">
+      <stop offset="0%" stop-color="#FFEFC2"/>
+      <stop offset="42%" stop-color="#F3C463"/>
+      <stop offset="100%" stop-color="#C9922A"/>
+    </linearGradient>
+    <radialGradient id="mintGrad" cx="34%" cy="24%" r="82%">
+      <stop offset="0%" stop-color="#E4FFF2"/>
+      <stop offset="44%" stop-color="#8FE3B8"/>
+      <stop offset="100%" stop-color="#4FB98C"/>
+    </radialGradient>
+    <radialGradient id="eyeGrad" cx="40%" cy="30%" r="78%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="72%" stop-color="#FDF5E6"/>
+      <stop offset="100%" stop-color="#EFE0C6"/>
+    </radialGradient>
+    <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F7B8A8" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#F7B8A8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="11"/>
+    </filter>
+    <clipPath id="cupClip">
+      <path d="M240 300 L784 300 L752 800 C 748 846, 716 876, 674 880 L 350 880 C 308 876, 276 846, 272 800 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="512" cy="898" rx="252" ry="44" fill="#8A6A45" opacity="0.20" filter="url(#soft)"/>
+
+  <!-- wind-up handle (behind the cup) -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+    <path d="M744 462 C 876 460, 918 496, 918 546 C 918 600, 876 632, 744 632
+             L 744 580 C 856 580, 868 566, 868 546 C 868 526, 856 512, 744 512 Z"
+          fill="url(#goldGrad)"/>
+    <!-- clockwork coil on the handle -->
+    <circle cx="846" cy="546" r="30" fill="url(#mintGrad)"/>
+    <circle cx="846" cy="546" r="18" fill="none" stroke="#3E8F6A" stroke-width="6"/>
+    <circle cx="846" cy="546" r="8" fill="url(#goldGrad)" stroke-width="4"/>
+  </g>
+
+  <!-- glass cup -->
+  <path d="M240 300 L784 300 L752 800 C 748 846, 716 876, 674 880 L 350 880 C 308 876, 276 846, 272 800 Z"
+        fill="url(#glassGrad)" stroke="#6B4B2A" stroke-width="8" stroke-linejoin="round"/>
+
+  <!-- milk inside -->
+  <g clip-path="url(#cupClip)">
+    <path d="M200 386 C 280 356, 348 410, 430 384 C 512 358, 578 412, 660 386 C 720 366, 780 384, 820 374
+             L 820 920 L 200 920 Z"
+          fill="url(#milkGrad)"/>
+    <path d="M200 386 C 280 356, 348 410, 430 384 C 512 358, 578 412, 660 386 C 720 366, 780 384, 820 374"
+          fill="none" stroke="#D9B98D" stroke-width="7" opacity="0.75"/>
+    <!-- glass gloss band + edge lights -->
+    <path d="M268 320 C 250 460, 262 650, 300 830 L 352 838 C 316 650, 306 460, 322 320 Z"
+          fill="#FFFFFF" opacity="0.55"/>
+    <path d="M700 330 C 716 470, 704 660, 676 826 L 704 822 C 734 658, 744 470, 728 330 Z"
+          fill="#FFFFFF" opacity="0.35"/>
+  </g>
+
+  <!-- glass rim highlight -->
+  <path d="M258 322 C 300 306, 420 300, 512 300" fill="none" stroke="#FFFFFF" stroke-width="9" opacity="0.8" stroke-linecap="round"/>
+
+  <!-- face -->
+  <g>
+    <circle cx="428" cy="520" r="64" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="7"/>
+    <circle cx="598" cy="520" r="64" fill="url(#eyeGrad)" stroke="#6B4B2A" stroke-width="7"/>
+    <circle cx="420" cy="528" r="34" fill="#3A2A1E"/>
+    <circle cx="606" cy="528" r="34" fill="#3A2A1E"/>
+    <circle cx="410" cy="516" r="12" fill="#FFFFFF"/>
+    <circle cx="596" cy="516" r="12" fill="#FFFFFF"/>
+    <circle cx="432" cy="544" r="7" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="618" cy="544" r="7" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+
+  <ellipse cx="324" cy="600" rx="62" ry="32" fill="url(#blushGrad)"/>
+  <ellipse cx="702" cy="600" rx="62" ry="32" fill="url(#blushGrad)"/>
+
+  <!-- derpy little "o" mouth -->
+  <g>
+    <ellipse cx="514" cy="644" rx="17" ry="21" fill="#6B4B2A"/>
+    <ellipse cx="514" cy="654" rx="11" ry="8" fill="#E48B7A"/>
+  </g>
+
+  <!-- frog paw stickers on the glass -->
+  <g fill="#8FE3B8" fill-opacity="0.55" stroke="#4FB98C" stroke-width="5" stroke-linejoin="round">
+    <g transform="translate(392 752) rotate(-8)">
+      <ellipse cx="0" cy="24" rx="40" ry="32"/>
+      <circle cx="-40" cy="-14" r="13"/>
+      <circle cx="-14" cy="-28" r="13"/>
+      <circle cx="14" cy="-28" r="13"/>
+      <circle cx="40" cy="-14" r="13"/>
+    </g>
+    <g transform="translate(624 786) rotate(10) scale(0.82)">
+      <ellipse cx="0" cy="24" rx="40" ry="32"/>
+      <circle cx="-40" cy="-14" r="13"/>
+      <circle cx="-14" cy="-28" r="13"/>
+      <circle cx="14" cy="-28" r="13"/>
+      <circle cx="40" cy="-14" r="13"/>
+    </g>
+  </g>
+
+  <!-- milk foam on the rim -->
+  <g stroke="#6B4B2A" stroke-width="7" stroke-linejoin="round">
+    <path d="M236 340
+             C 236 306, 258 288, 290 292
+             C 296 258, 332 246, 360 264
+             C 374 234, 414 228, 434 254
+             C 452 226, 492 224, 512 252
+             C 532 224, 572 226, 590 254
+             C 610 228, 650 234, 664 264
+             C 692 246, 728 258, 734 292
+             C 766 288, 788 306, 788 340
+             L 788 358 C 700 376, 320 376, 236 358 Z"
+          fill="url(#foamGrad)"/>
+    <!-- foam puffs shading -->
+    <g fill="none" stroke="#E0C49B" stroke-width="6" opacity="0.7" stroke-linecap="round">
+      <path d="M352 300 C 356 262, 384 248, 406 258"/>
+      <path d="M600 296 C 612 268, 638 256, 656 264"/>
+    </g>
+    <g fill="#FFFFFF" opacity="0.85">
+      <ellipse cx="318" cy="306" rx="26" ry="13" transform="rotate(-18 318 306)"/>
+      <ellipse cx="470" cy="266" rx="20" ry="10" transform="rotate(-8 470 266)"/>
+      <ellipse cx="686" cy="314" rx="24" ry="12" transform="rotate(16 686 314)"/>
+    </g>
+  </g>
+
+  <!-- sparkles -->
+  <g stroke="#6B4B2A" stroke-width="4" stroke-linejoin="round">
+    <path d="M198 470 L 206 488 L 224 496 L 206 504 L 198 522 L 190 504 L 172 496 L 190 488 Z" fill="url(#mintGrad)"/>
+    <path d="M812 390 L 819 406 L 835 413 L 819 420 L 812 436 L 805 420 L 789 413 L 805 406 Z" fill="url(#goldGrad)"/>
+  </g>
+</svg>

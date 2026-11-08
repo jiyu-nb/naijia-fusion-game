@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>奶家人 · 3D 自测台（three-frog）</title>
+<link rel="icon" href="data:," />
+<style>
+  :root { --cream:#F6D792; --milk:#FFF6E3; --gold:#F2BE55; --gold-deep:#CE9A2F; --comb:#E25A3F; --ink:#6B4B36; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; background: #241f1a; color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { display: flex; align-items: center; justify-content: center; padding: 10px; }
+  #phone {
+    position: relative; width: 390px; height: 844px; max-height: calc(100vh - 20px);
+    display: flex; flex-direction: column; overflow: hidden; border-radius: 26px;
+    background: radial-gradient(120% 80% at 50% 6%, #fffdf6 0%, #fdf1da 42%, #eddcc0 100%);
+    box-shadow: 0 18px 60px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.5);
+  }
+  @media (max-width: 420px) { body { padding: 0; } #phone { width: 100vw; height: 100vh; max-height: none; border-radius: 0; } }
+  #status { flex: 0 0 auto; padding: 8px 12px; font-size: 11.5px; line-height: 1.55; background: rgba(255,255,255,.55); border-bottom: 1px solid rgba(107,75,36,.16); }
+  .row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 700; border: 1px solid rgba(107,75,36,.35); background: #fff; }
+  .pill.on { background: #B9E8C8; border-color: #6CB98C; }
+  .pill.warn { background: #FFE0A8; border-color: var(--gold-deep); }
+  .pill.gold { background: var(--gold); border-color: var(--gold-deep); }
+  #stage-wrap { position: relative; flex: 1 1 auto; min-height: 0; }
+  #stage { position: absolute; inset: 0; }
+  #hint {
+    position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
+    max-width: 92%; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    background: rgba(255,255,255,.85); border: 1.5px solid rgba(107,75,36,.28);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;
+    box-shadow: 0 4px 14px rgba(107,75,36,.14);
+  }
+  #bottom { flex: 0 0 auto; padding: 8px 10px 12px; background: rgba(255,255,255,.6); border-top: 1px solid rgba(107,75,36,.16); }
+  #log { height: 58px; overflow: hidden; font-family: ui-monospace, Menlo, monospace; font-size: 10px; line-height: 1.25; background: rgba(255,255,255,.75); border-radius: 8px; padding: 4px 6px; margin-bottom: 7px; white-space: pre-wrap; word-break: break-all; }
+  .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  button {
+    flex: 1 1 auto; min-width: 72px; padding: 8px 6px; font-size: 12px; font-weight: 700;
+    color: var(--ink); background: #fff; border: 1.5px solid rgba(107,75,36,.4); border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(107,75,36,.22); cursor: pointer; font-family: inherit;
+  }
+  button:active { transform: translateY(1px); box-shadow: none; }
+  button.cream { background: var(--cream); }
+  button.gold { background: var(--gold); border-color: var(--gold-deep); }
+  button.on { background: #B9E8C8; border-color: #6CB98C; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "../vendor/three/build/three.module.js",
+    "three/addons/": "../vendor/three/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="phone">
+    <div id="status">
+      <div class="row">
+        <span id="badge" class="pill warn">加载中…</span>
+        <span id="srcPill" class="pill">source: -</span>
+        <span id="sizePill" class="pill">size: -</span>
+      </div>
+      <div class="row" style="margin-top:4px">
+        <span id="actPill" class="pill">actions: 0</span>
+        <span id="goalPill" class="pill">goal: -</span>
+        <span id="evtPill" class="pill">last: -</span>
+        <span id="dragPill" class="pill">drag: 0</span>
+      </div>
+    </div>
+
+    <div id="stage-wrap">
+      <div id="stage"></div>
+      <div id="hint">加载中…</div>
+    </div>
+
+    <div id="bottom">
+      <div id="log"></div>
+      <div class="btns">
+        <button id="btn-naidan" class="cream">奶蛋</button>
+        <button id="btn-naibao" class="cream">奶包</button>
+        <button id="btn-naigou" class="cream">奶狗</button>
+        <button id="btn-naiji" class="cream">奶鸡</button>
+      </div>
+      <div class="btns" style="margin-top:6px">
+        <button id="btn-showcase" class="gold">奶蛙展示</button>
+        <button id="btn-birth">重播出生</button>
+        <button id="btn-hotspot">打印热点</button>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+import * as THREE from 'three';
+import { createFamilyChild } from '../src/three/familyChild.js';
+import { createShowcase } from '../src/three/familyShowcase.js';
+
+const errors = [];
+window.__devErrors = errors;
+window.addEventListener('error', (e) => errors.push('error: ' + (e.message || e)));
+window.addEventListener('unhandledrejection', (e) => errors.push('unhandledrejection: ' + (e.reason && (e.reason.message || e.reason))));
+
+const $ = (id) => document.getElementById(id);
+const logs = [];
+function log(msg) {
+  logs.push(`${new Date().toLocaleTimeString('zh-CN', { hour12: false })}  ${msg}`);
+  if (logs.length > 60) logs.shift();
+  $('log').textContent = logs.slice(-5).join('\n');
+}
+
+const params = new URLSearchParams(location.search);
+const CHILDREN = ['naidan', 'naibao', 'naigou', 'naiji'];
+let childId = CHILDREN.includes(params.get('child')) ? params.get('child') : 'naidan';
+const showcaseId = params.get('showcase');
+let api = null;
+let mode = 'child';
+let hintText = '加载中…';
+let events = [];
+let creating = false;
+
+window.__devEvents = events;
+window.__devGoals = [];
+
+function setHint(t) { hintText = t; $('hint').textContent = t; log('hint: ' + t); }
+
+function markButtons() {
+  for (const id of CHILDREN) $('btn-' + id).classList.toggle('on', mode === 'child' && childId === id);
+  $('btn-showcase').classList.toggle('on', mode === 'showcase');
+}
+
+function refreshUI() {
+  if (mode === 'showcase') {
+    const d = api && api.getDebugState ? api.getDebugState() : null;
+    if (d) {
+      $('badge').textContent = `奶蛙展示 · ${d.modelSource === 'family-glb' ? '真实 GLB' : '回退奶团'}`;
+      $('badge').className = 'pill ' + (d.modelSource === 'family-glb' ? 'on' : 'warn');
+      $('srcPill').textContent = 'source: ' + d.modelSource;
+      $('sizePill').textContent = `size: ${d.size.x}×${d.size.y}×${d.size.z}`;
+      $('actPill').textContent = `转台 ${d.turntableDeg}°`;
+      $('goalPill').textContent = '想动就拖它';
+      $('evtPill').textContent = `tris ${d.triangles}`;
+      $('dragPill').textContent = `load ${d.loadMs}ms`;
+    }
+    return;
+  }
+  const d = api && api.getDebugState ? api.getDebugState() : null;
+  if (!d) { $('badge').textContent = '加载中…'; return; }
+  const isGlb = d.modelSource === 'family-glb';
+  $('badge').textContent = `${d.childId} · ${isGlb ? '真实 GLB' : '回退奶团'}`;
+  $('badge').className = 'pill ' + (isGlb ? 'on' : 'warn');
+  $('srcPill').textContent = 'source: ' + d.modelSource;
+  $('sizePill').textContent = `size: ${d.modelSize.x}×${d.modelSize.y}×${d.modelSize.z}`;
+  $('actPill').textContent = 'actions: ' + d.actionCount;
+  $('goalPill').textContent = 'goal: ' + (d.goalFired ? '✔' : '-');
+  $('goalPill').className = 'pill' + (d.goalFired ? ' gold' : '');
+  $('evtPill').textContent = 'last: ' + (d.lastEvent || '-');
+  $('dragPill').textContent = `drag: ${d.dragAccum}px / rev ${d.reversals}`;
+  $('hint').textContent = hintText;
+}
+
+async function unmount() {
+  if (api) { try { api.dispose(); } catch (e) { console.warn(e); } api = null; }
+  $('stage').innerHTML = '';
+}
+
+async function mountChild(nextChild) {
+  if (creating) return;
+  creating = true;
+  try {
+    await unmount();
+    mode = 'child';
+    childId = nextChild;
+    events = [];
+    window.__devEvents = events;
+    window.__devGoals = [];
+    hintText = '加载中…';
+    markButtons();
+    log(`创建子代 ${childId}`);
+    api = await createFamilyChild($('stage'), {
+      childId,
+      noBirth: params.get('noBirth') === '1',
+      noUI: params.get('noUI') === '1',
+      transparent: params.get('transparent') === '1',
+      hint: setHint,
+      onEvent: (type) => { events.push(type); log('event: ' + type); },
+      onGoal: (p) => { window.__devGoals.push(p); log('onGoal: ' + JSON.stringify(p)); },
+      onLoad: (info) => log(`onLoad: ${info.modelSource} ${info.loadMs}ms ${info.triangles}tris`),
+    });
+    log('child ready: ' + api.getModelSource());
+    refreshUI();
+  } catch (err) {
+    log('createFamilyChild 失败: ' + (err && err.message ? err.message : err));
+    console.error('[dev-family] createFamilyChild 失败', err);
+  } finally {
+    creating = false;
+  }
+}
+
+async function mountShowcase(id) {
+  if (creating) return;
+  creating = true;
+  try {
+    await unmount();
+    mode = 'showcase';
+    markButtons();
+    log('创建奶蛙展示');
+    api = await createShowcase($('stage'), {
+      id,
+      transparent: params.get('transparent') === '1',
+      onReady: ({ ok }) => log('showcase onReady ok=' + ok),
+    });
+    log('showcase ready: ' + api.getModelSource());
+    setHint('缓慢转台中（无交互）');
+    refreshUI();
+  } catch (err) {
+    log('createShowcase 失败: ' + (err && err.message ? err.message : err));
+    console.error('[dev-family] createShowcase 失败', err);
+  } finally {
+    creating = false;
+  }
+}
+
+window.__familyDev = {
+  get api() { return api; },
+  get mode() { return mode; },
+  get hint() { return hintText; },
+  get events() { return events; },
+  get goals() { return window.__devGoals; },
+  state: () => (api && api.getDebugState ? api.getDebugState() : null),
+  remount: (id) => mountChild(id),
+  showcase: (id) => mountShowcase(id || 'niwa'),
+  /** 热点屏幕坐标（自动化点击用） */
+  hotspot() {
+    if (!api || mode !== 'child') return null;
+    const d = api.getDebugState();
+    const key = Object.keys(d.hotspots)[0];
+    return d.hotspots[key];
+  },
+  /** 身体包围盒的屏幕范围（判「点身体非热点」用） */
+  modelBox() {
+    return api && api.getModelScreenBox ? api.getModelScreenBox() : null;
+  },
+  projectLocal(local) {
+    if (!api) return null;
+    const world = api.root.localToWorld(new THREE.Vector3(local.x, local.y, local.z));
+    const rect = api.renderer.domElement.getBoundingClientRect();
+    const v = world.clone().project(api.camera);
+    return {
+      x: rect.left + ((v.x + 1) / 2) * rect.width,
+      y: rect.top + ((1 - v.y) / 2) * rect.height,
+      visible: v.z < 1 && v.x > -1 && v.x < 1 && v.y > -1 && v.y < 1,
+    };
+  },
+  /** 画布上任意点的屏幕坐标（NDC → 屏幕），用于点空白 */
+  canvasRect() {
+    if (!api) return null;
+    const r = api.renderer.domElement.getBoundingClientRect();
+    return { left: r.left, top: r.top, width: r.width, height: r.height };
+  },
+  THREE,
+};
+
+for (const id of CHILDREN) $('btn-' + id).addEventListener('click', () => mountChild(id));
+$('btn-showcase').addEventListener('click', () => mountShowcase('niwa'));
+$('btn-birth').addEventListener('click', () => { if (api && api.reset) { api.reset(); log('reset()'); } });
+$('btn-hotspot').addEventListener('click', () => log(`热点 ${JSON.stringify(window.__familyDev.hotspot())}`));
+
+if (showcaseId) mountShowcase(showcaseId === '1' ? 'niwa' : showcaseId);
+else mountChild(childId);
+markButtons();
+refreshUI();
+window.__uiTimer = setInterval(refreshUI, 200);
+log('dev-family 启动');
+</script>
+</body>
+</html>
